@@ -1,0 +1,165 @@
+<html>
+    <head>
+        <style>
+            td{
+                width: 106px;
+                height: 103px;
+                text-align: center;
+                font-size: 52px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    </head>
+    <body>
+        <table border="1" style="margin: 136px;">
+            <tr>
+                <td id="0_0" class="click_event"></td>
+                <td id="0_1" class="click_event"></td>
+                <td id="0_2" class="click_event"></td>
+            </tr>
+            <tr>
+                <td id="1_0" class="click_event"></td>
+                <td id="1_1" class="click_event"></td>
+                <td id="1_2" class="click_event"></td>
+            </tr>
+            <tr>
+                <td id="2_0" class="click_event"></td>
+                <td id="2_1" class="click_event"></td>
+                <td id="2_2" class="click_event"></td>
+            </tr>
+    </table>
+    </body>
+    <script>
+        var matrix=[
+                        ['0','0','0'],
+                        ['0','0','0'],
+                        ['0','0','0']
+                    ];
+        var move_count=0;
+        $(document).ready(function(){
+        $(".click_event").click(function()
+            {
+                var test=$(this).attr("id");
+
+                if(matrix[test[0]][test[1]]=='0')
+                {
+                    //console.log(matrix[test[0]][test[1]]);
+                    return false;
+                }
+               // console.log(matrix);
+                move_count++;
+
+                let user='X';
+                if(move_count%2==0)user='O';
+                
+                matrix[test[0]][test[2]]=user;
+                
+               // console.log(matrix);
+                table_refresh();
+                
+            });
+        });
+
+        function table_refresh()
+        {
+           // console.log(matrix);
+            for(let i=0;i<3;i++)
+            {
+                for(let j=0;j<3;j++)
+                {
+                    var val=matrix[i][j];
+
+                    if(val=='0')val='';
+                    
+                    $("#"+i+"_"+j).text(val);
+                }
+            }
+
+            check();
+        } 
+
+        function check()
+        {
+            rowLevelCheck();
+            columnLevelCheck();
+            diagonalOneCheck();
+            diagonalTwoCheck();
+        }
+
+        function rowLevelCheck()
+        {
+            for(let i=0;i<3;i++)
+            {
+                var val=matrix[i][0];
+                var boolean=true;
+                for(let j=1;j<3;j++)
+                {
+                    if(val!=matrix[i][j] || val=='0')
+                    {
+                        boolean=false;
+                        continue;
+                    }
+                }
+                if(boolean==true)
+                {
+                    alert(val+" is Winner");
+                    return false;
+                }
+                
+            }
+        }
+
+        function columnLevelCheck()
+        {
+            for(let i=0;i<3;i++)
+            {
+                var val=matrix[0][i];
+                var boolean=true;
+
+                for(let j=1;j<3;j++)
+                {
+                    if(val!=matrix[j][i] || val=='0')
+                    {
+                        boolean=false;
+                        continue;
+                    }
+                }
+
+                if(boolean==true)
+                {
+                    alert(val+" is Winner");
+                    return false;
+                }
+            }
+        }
+
+        function diagonalOneCheck()
+        {
+            if((matrix[0][0]!=matrix[1][1] || matrix[0][0]!=matrix[2][2]) || matrix[0][0]=='0' || matrix[1][1]=='0' || matrix[2][2]=='0')
+            {
+                return false;
+            }  
+            alert(matrix[0][0]+" is Winner"); 
+            return false;    
+        }
+
+        function diagonalTwoCheck()
+        {
+            var i=0;
+            var j=2;
+
+            var val=matrix[i][j];
+            while(j>0)
+            {
+                i++;
+                j--;
+                if(val!=matrix[i][j] || val=='0')
+                {
+                    return false;
+                }
+            }
+            alert(matrix[i][j]+" is Winner"); 
+            return false; 
+        }
+    </script>
+</html>
